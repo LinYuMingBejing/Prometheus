@@ -1,0 +1,30 @@
+version: '3'
+services:
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: "prom/prometheus:v2.19.2"
+    volumes:
+       - ./etc/prometheus.yml:/etc/prometheus/prometheus.yml
+       - ./etc/rules:/etc/prometheus/rules
+    ports:
+      - "9090:9090"
+      
+  victoria-metrics:
+    container_name: victoria-metrics
+    hostname: victoria-metrics
+    image: "victoriametrics/victoria-metrics:v1.37.3"
+    volumes:
+      - ./data/victoria-metrics-data:/victoria-metrics-data
+    ports:
+      - "8428:8428"
+
+  grafana:
+    container_name: grafana
+    hostname: grafana
+    image: "grafana/grafana:7.0.4"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    user: root
+    ports:
+      - "3000:3000"
